@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+			$(function(){
+				initData(name);
+			})
+			var initData = function(name){
+				var name = $("input[name='newName']").val();
+				$.ajax({
+					type:"post",
+					data:{
+						newName:name
+					},
+					dataType:"json",
+					url:"/News/News/getNews.do",
+					success:function(data){
+						var myTable = $("tbody");
+						myTable.html("");
+						$.each(data["pageList"],function(i,v){
+							var jsonDate = v["createdate"];
+							var dateTime = jsonDateFormat(jsonDate);
+							myTable.append("<tr><td value="+v["id"]+">"+v["id"]+"</td><td>"+v["title"]+"</td><td>"+v["summary"]+"</td><td>"+v["author"]+"</td><td>"+dateTime+"</td><td><a href='comment.html?comId="+v["id"]+"'>查看评论</a><a href='/News/writeCom.do?newId="+v["id"]+"'>评论</a><a href='/News/delNew.do?newId="+v["id"]+"'>删除</a></td></tr>")
+						})
+					},
+					error:function(){
+						alert("请求失败");
+					},
+				});
+			}
+			function jsonDateFormat(jsonDate) {
+
+				//json日期格式转换为正常格式
+
+				var jsonDateStr = jsonDate.toString();//此处用到toString（）是为了让传入的值为字符串类型，目的是为了避免传入的数据类型不支持.replace（）方法
+				try {
+				var date = new Date(parseInt(jsonDateStr.replace("/Date(", "").replace(")/", ""), 10));
+				var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+				var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+				var hours = date.getHours();
+				var minutes = date.getMinutes();
+				var seconds = date.getSeconds();
+				var milliseconds = date.getMilliseconds();
+				return date.getFullYear() + "-" + month + "-" + day;
+				} catch (ex) {
+				return "时间格式转换错误";
+				}
+				}
+		</script>
+</head>
+<body>
+	<h1>
+		新闻列表 <input name="newName" />
+		<button onclick=initData();>查询</button>
+	</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>新闻编号</th>
+				<th>新闻标题</th>
+				<th>新闻摘要</th>
+				<th>作者</th>
+				<th>创建时间</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</body>
+</html>
