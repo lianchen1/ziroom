@@ -18,7 +18,6 @@ public class BaseController extends HttpServlet{
 		String clazzNameLast = url.substring(0,url.lastIndexOf("/"));
 		String clazzName = clazzNameLast.substring(clazzNameLast.lastIndexOf("/")+1);
 		String action = url.substring(url.lastIndexOf("/")+1, url.lastIndexOf("."));
-		System.out.println(action);
 		try {
 			Class clazz = Class.forName("controller."+clazzName.substring(0,1).toUpperCase()+clazzName.substring(1)+"Controller");
 			Object obj = clazz.newInstance();

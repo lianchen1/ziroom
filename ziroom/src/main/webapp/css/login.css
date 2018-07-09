@@ -1,0 +1,99 @@
+*{
+	padding: 0;
+	margin: 0;	
+}
+.biaoti{
+	width: 1200px;
+	height: 83px;
+}
+.biaoti img{
+	width: 150px;
+	height: 50px;
+	margin-top:15px ;
+}
+hr{
+	border: solid  1px orange ;
+}
+.jiemian{
+	width: 100%;
+	height: 520px;
+	background-image:url(../img/login_back.jpg) ;
+	background-repeat: no-repeat;
+}
+.dljm{
+	width: 1200px;
+	height: 508px;
+}
+.dljm .denglu{
+	width: 360px;
+	background-color:white ;
+	float: right;
+	margin-top:50px ;
+}
+li{
+	list-style: none;
+}
+ul li{
+	margin-top:20px ;
+	text-align: center;
+	font-size: 10px;
+}
+ul li input{
+	outline: none;
+	border: 1px solid #CCCCCC;
+}
+ul li .l1{
+	width: 280px;
+	height: 45px;
+	border-radius:5px ;
+	background-color:rgb(255, 255, 255);
+	text-indent:15px ;
+}
+ul li .l2{
+	width: 280px;
+	height: 50px;
+	border: 0;
+	border-radius:5px ;
+	background-color: #ffa000;
+	font-size: 18px;
+	color: white;
+	cursor: pointer;
+}
+ul li .l2:hover{
+	background:#ff8228
+}
+ul li:nth-of-type(6){
+	font-size: 15px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+ul li:nth-of-type(6) span a,ul li:nth-of-type(4) span a{
+	color: #FD8145;
+}
+ul li:nth-of-type(1){
+	font-size: 15px;
+}
+ul li .wjmm{
+	color: #FF8247;
+	margin-left:140px ;
+}
+
+ul li:nth-of-type(4) input{
+	width: 15px; 
+	height: 15px;
+	position: relative;
+	top: 3px;
+}
+.happy{
+	margin-left: 40px;
+	background-image: url(../img/login_icon.png);
+	background-position: 0 -60px;
+	background-repeat: no-repeat;
+	height: 21px;
+}
+.error{
+	color: red;
+	text-align: left;
+	margin-left: 40px;
+}
+

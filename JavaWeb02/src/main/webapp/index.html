@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		showInvit(page);
+		var page = $(".page").text();
+		$(".sy").click(function() {
+			page = 0;
+			showInvit(page);
+		})
+		$(".syy").click(function() {
+			if (page <= 0) {
+				page = 0;
+			} else {
+				page--;
+			}
+			showInvit(page);
+		})
+		$(".xyy").click(function() {
+			if (page >= $(".totalPage").text()-1) {
+				page = $(".totalPage").text()-1;
+			} else {
+				page++;
+			}
+			showInvit(page);
+		})
+		$(".my").click(function() {
+			page = $(".totalPage").text() - 1;
+			showInvit(page);
+		})
+	})
+	function showInvit(page) {
+		var invitName = $("input[name=invitName]").val();
+		$.ajax({
+					type : "post",
+					data : {
+						invitName : invitName,
+						index : page
+					},
+					dataType : "json",
+					url : "/JavaWeb02/Invit/showInvit.do",
+					success : function(data) {
+						var myTable = $("tbody");
+						myTable.html("");
+						$
+								.each(
+										data["list"],
+										function(i, v) {
+											var jsonDate = v["createdate"];
+											var dateTime = jsonDateFormat(jsonDate);
+											myTable
+													.append("<tr><td>"
+															+ v["title"]
+															+ "</td><td>"
+															+ v["summary"]
+															+ "</td><td>"
+															+ v["author"]
+															+ "</td><td>"
+															+ dateTime
+															+ "</td><td><a href='/JavaWeb02/Detail.html?invitId="
+															+ v["id"]
+															+ "'>查看回复</a><a href='/JavaWeb02/Invit/delInvit.do?invitId="
+															+ v["id"]
+															+ "'>删除</a></td></tr>")
+										})
+						$(".page").text(data["index"] + 1);
+						$(".totalPage").text(data["totalPage"]);
+					},
+					error : function() {
+						alert("获取失败");
+					}
+				})
+	}
+	function jsonDateFormat(jsonDate) {
+
+		//json日期格式转换为正常格式
+
+		var jsonDateStr = jsonDate.toString();//此处用到toString（）是为了让传入的值为字符串类型，目的是为了避免传入的数据类型不支持.replace（）方法
+		try {
+			var date = new Date(parseInt(jsonDateStr.replace("/Date(", "")
+					.replace(")/", ""), 10));
+			var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1)
+					: date.getMonth() + 1;
+			var day = date.getDate() < 10 ? "0" + date.getDate() : date
+					.getDate();
+			var hours = date.getHours();
+			var minutes = date.getMinutes();
+			var seconds = date.getSeconds();
+			var milliseconds = date.getMilliseconds();
+			return date.getFullYear() + "-" + month + "-" + day;
+		} catch (ex) {
+			return "时间格式转换错误";
+		}
+	}
+</script>
+</head>
+<body>
+	<h1>帖子列表</h1>
+	帖子标题
+	<input name="invitName" />
+	<button onclick="showInvit()">搜索</button>
+	<table>
+		<thead>
+			<tr>
+				<th>标题</th>
+				<th>内容摘要</th>
+				<th>作者</th>
+				<th>发布时间</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+
+		</tbody>
+	</table>
+	<p>
+		第<span class="page">1</span>/<span class="totalPage">1</span>页
+		<button class="sy">首页</button>
+		<button class="syy">上一页</button>
+		<button class="xyy">下一页</button>
+		<button class="my">末页</button>
+	</p>
+</body>
+</html>

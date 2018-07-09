@@ -32,6 +32,7 @@ public class BaseDAO<T> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println(pstm);
 		return pstm;
 	}
 	//ÔöÉ¾¸Ä
@@ -52,7 +53,6 @@ public class BaseDAO<T> {
 	public List<T> selectData(String sql,List<Object> lists,Class clazz){
 		List<T> objs = new ArrayList<T>();
 		pstm = this.getPstm(sql, lists);
-		System.out.println(pstm);
 		try {
 			rs = pstm.executeQuery();
 			ResultSetMetaData rsmd = rs.getMetaData();

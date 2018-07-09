@@ -1,4 +1,4 @@
-package DAO;
+package dao;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -20,6 +20,9 @@ public class BaseDAO<T> {
 	PreparedStatement pstm = null;
 	public PreparedStatement getPstm(String sql,List<Object> lists) {
 		con = DBhelper.getCon();
+		if(con == null) {
+			System.out.println("数据库未打开");
+		}
 		try {
 			pstm = con.prepareStatement(sql);
 			for (int i = 0; i < lists.size(); i++) {
@@ -29,7 +32,6 @@ public class BaseDAO<T> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(pstm);
 		return pstm;
 	}
 	//增，删，改
@@ -52,6 +54,7 @@ public class BaseDAO<T> {
 		return result;
 	}
 	//查询，返回list集合（存放对象列表）
+	@SuppressWarnings("unchecked")
 	public List<T> selectData(String sql,List<Object> lists,Class<T> clazz){
 		List<T> list = new ArrayList<T>();
 		this.getPstm(sql, lists);

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" type="text/css" href="css/register.css" />
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		var myPwd = null;
+		$("input[name=phone]").blur(function() {
+			var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+			if (myreg.test($("input[name=phone]").val())) {
+				var user_phone = $("input[name=phone]").val();
+				$(".phoneError").text("");
+				phoneIsFind(user_phone);
+			} else {
+				$(".phoneError").text("请输入正确的手机号");
+			}
+		})
+		$("input[name=password]").blur(function() {
+			var myreg = /^[a-z\d]{6,12}$/i;
+			if (myreg.test($("input[name=password]").val())) {
+				$(".passwordError").text("");
+				myPwd = $("input[name=password]").val();
+			} else {
+				$(".passwordError").text("密码格式不正确");
+			}
+		})
+		$("input[name=repassword]").blur(function() {
+			if (myPwd != null) {
+				var repwds = $("input[name=repassword]").val();
+				if (repwds == myPwd) {
+					$(".repasswordError").text("");
+				} else {
+					$(".repasswordError").text("两次密码不一致");
+				}
+			} else {
+				$(".repasswordError").text("密码不能为空");
+			}
+		})
+	})
+	var phoneIsFind = function(user_phone) {
+		$.ajax({
+			type : "post",
+			data : {
+				phone : user_phone
+			},
+			dataType : "json",
+			url : "/ziroom/Register/findPhone.do",
+			success : function(data) {
+				$(".phoneError").text("");
+				$(".phoneError").text(data);
+			},
+			error : function() {
+				alert("请求失败");
+			}
+		})
+	}
+	var regist = function() {
+		if ($(".error").text() == "" && $("input[name=repassword]").val() != ""&&$("input[name=yanzhengma]").val() != "") {
+			var user_code = $("input[name=phone]").val();
+			var password = $("input[name=password]").val();
+			register(user_code, password);
+		} else {
+			alert("请填写注册信息");
+		}
+	}
+	var register = function(user_code, password) {
+		$.ajax({
+			type : "post",
+			data : {
+				phone : user_code,
+				password : password
+			},
+			dataType : "json",
+			url : "/ziroom/Register/register.do",
+			success : function(data) {
+				window.location.href = "index.html"
+			},
+			error : function() {
+			}
+		})
+	}
+	function sendss() {
+		if (($("input[name=phone]").val() != "")
+				&& ($(".phoneError").text() == "")) {
+			sendSms();
+		}
+	}
+	var sendSms = function() {
+		var timeU = 60;
+		var timeSet = setInterval(function() {
+			timeU--;
+			$(".yanzhengmabox").css("background-color", "#d9d9d9");
+			$(".yanzhengmabox").text(timeU);
+			$(".yanzhengmabox").removeAttr("onclick");
+			if (timeU <= 0) {
+				clearInterval(timeSet);
+				$(".yanzhengmabox").css("background-color", "#ffa000");
+				$(".yanzhengmabox").text("重新发送");
+				$(".yanzhengmabox").attr("onclick", "sendss()");
+			}
+		}, 1000);
+		$(".sms").blur(function() {
+			isCode();
+		})
+		var phoneNum = $("input[name=phone]").val();
+		$.ajax({
+			type : "post",
+			data : {
+				phoneNum : phoneNum
+			},
+			dataType : "json",
+			url : "/ziroom/Register/doPhone.do",
+			success : function(data) {
+				$(".smsError").text(data);
+			},
+			error : function() {
+				alert("请求失败");
+			}
+		})
+	}
+	var isCode = function() {
+		var phoneNum = $("input[name=phone]").val();
+		var isCode = $(".sms").val();
+		$.ajax({
+			type : "post",
+			data : {
+				phoneNum : phoneNum,
+				isPhone : isCode
+			},
+			dataType : "json",
+			url : "/ziroom/Register/isPhone.do",
+			success : function(data) {
+				$(".smsError").text(data);
+			},
+			error : function() {
+				alert("请求失败");
+			}
+		})
+	}
+</script>
+</head>
+
+<body>
+	<div class="biaoti">
+		<div class="logo">
+			<img src="img/logo.png" width="150px" height="70px" />
+		</div>
+	</div>
+	<hr />
+	<div class="jiemian">
+		<div class="zcjm">
+			<div class="zhuce">
+				<form>
+					<ul>
+						<li>
+							<p class="xinyonghu"></p>
+						</li>
+						<li><input class="l1" name="phone" placeholder="请输入手机号" />
+							<p class="error phoneError"></p></li>
+						<li><input type="text" placeholder="输入验证码" class="input-val l2">
+							<canvas id="canvas" width="100" height="30"></canvas>
+							<p class="error yzmError"></p></li>
+						<li><input class="l2 sms" placeholder="短信验证码" name="yanzhengma" />
+							<div class="yanzhengmabox" onclick="sendss()">获得验证码</div>
+							<p class="error smsError"></p></li>
+						<li><input class="l1" type="password" name="password"
+							placeholder="请输入6-12位密码" />
+							<p class="error passwordError"></p></li>
+						<li><input class="l1" type="password" name="repassword"
+							placeholder="请确认密码" />
+							<p class="error repasswordError"></p></li>
+						<li><input class="l3" type="button" value="注册"
+							onclick="regist()" /></li>
+						<li>已有账号?现在就<span><a href="login.html"
+								target="_parent">登录</a></span></li>
+					</ul>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="js/jquery-1.10.2.js"></script>
+<script>
+
+    $(function(){
+        var show_num = [];
+        draw(show_num);
+
+        $("#canvas").on('click',function(){
+            draw(show_num);
+        })
+        $(".input-val").on('blur',function(){
+            var val = $(".input-val").val().toLowerCase();
+            var num = show_num.join("");
+            if(val==''){
+            	$(".yzmError").text("");
+            }else if(val == num){
+            	$(".yzmError").text("");
+            }else{
+                $(".yzmError").text("验证码错误");
+                draw(show_num);
+            }
+        })
+    })
+
+    function draw(show_num) {
+        var canvas_width=$('#canvas').width();
+        var canvas_height=$('#canvas').height();
+        var canvas = document.getElementById("canvas");//获取到canvas的对象，演员
+        var context = canvas.getContext("2d");//获取到canvas画图的环境，演员表演的舞台
+        canvas.width = canvas_width;
+        canvas.height = canvas_height;
+        var sCode = "A,B,C,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,W,X,Y,Z,1,2,3,4,5,6,7,8,9,0";
+        var aCode = sCode.split(",");
+        var aLength = aCode.length;//获取到数组的长度
+        
+        for (var i = 0; i <= 3; i++) {
+            var j = Math.floor(Math.random() * aLength);//获取到随机的索引值
+            var deg = Math.random() * 30 * Math.PI / 180;//产生0~30之间的随机弧度
+            var txt = aCode[j];//得到随机的一个内容
+            show_num[i] = txt.toLowerCase();
+            var x = 10 + i * 20;//文字在canvas上的x坐标
+            var y = 20 + Math.random() * 8;//文字在canvas上的y坐标
+            context.font = "bold 23px 微软雅黑";
+
+            context.translate(x, y);
+            context.rotate(deg);
+
+            context.fillStyle = randomColor();
+            context.fillText(txt, 0, 0);
+
+            context.rotate(-deg);
+            context.translate(-x, -y);
+        }
+        for (var i = 0; i <= 5; i++) { //验证码上显示线条
+            context.strokeStyle = randomColor();
+            context.beginPath();
+            context.moveTo(Math.random() * canvas_width, Math.random() * canvas_height);
+            context.lineTo(Math.random() * canvas_width, Math.random() * canvas_height);
+            context.stroke();
+        }
+        for (var i = 0; i <= 30; i++) { //验证码上显示小点
+            context.strokeStyle = randomColor();
+            context.beginPath();
+            var x = Math.random() * canvas_width;
+            var y = Math.random() * canvas_height;
+            context.moveTo(x, y);
+            context.lineTo(x + 1, y + 1);
+            context.stroke();
+        }
+    }
+
+    function randomColor() {//得到随机的颜色值
+        var r = Math.floor(Math.random() * 256);
+        var g = Math.floor(Math.random() * 256);
+        var b = Math.floor(Math.random() * 256);
+        return "rgb(" + r + "," + g + "," + b + ")";
+    }
+</script>
+</body>
+</html>

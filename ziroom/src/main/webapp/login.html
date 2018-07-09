@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" type="text/css" href="css/login.css" />
+<script src="js/jquery-3.3.1.min.js" type="text/javascript"
+	charset="utf-8"></script>
+<script type="text/javascript">
+	$(function() {
+		$(".l2").click(function() {
+			if ($("input[name=phone]").val() == "") {
+				$(".phoneError").text("账号不能为空");
+			} else {
+				$(".phoneError").text("");
+				var userCode = $("input[name=phone]").val();
+				if ($("input[name=password]").val() == "") {
+					$(".pwdError").text("密码不能为空");
+				} else {
+					$(".pwdError").text("");
+					var password = $("input[name=password]").val()
+					$.ajax({
+						type : "post",
+						data : {
+							userCode : userCode,
+							password : password
+						},
+						dataTyoe : "json",
+						url : "/ziroom/Login/login.do",
+						success : function(data) {
+							if (data.indexOf("账户不存在") > 0) {
+								$(".phoneError").text("账户不存在");
+							} else if (data.indexOf("密码错误") > 0) {
+								$(".pwdError").text("密码错误");
+							} else {
+								window.location.href = "/ziroom/index.html";
+							}
+						},
+						error : function() {
+							alert("请求失败");
+						}
+					});
+				}
+			}
+		})
+	})
+</script>
+</head>
+
+<body>
+	<div class="biaoti">
+		<img src="img/logo.png" width="150px" height="70px" />
+	</div>
+	<hr />
+	<div class="jiemian">
+		<div class="dljm">
+			<div class="denglu">
+				<form>
+					<ul>
+						<li>
+							<p class="happy"></p>
+						</li>
+						<li><input class="l1" name="phone" placeholder="请输入用户名或手机号" />
+							<p class="error phoneError"></p></li>
+						<li><input class="l1" type="password" name="password"
+							placeholder="请输入6-12位密码" />
+							<p class="error pwdError"></p></li>
+						<li><input type="checkbox" />一周内免登录 <span class="wjmm"><a
+								href="#">忘记密码?</a></span></li>
+						<li><input class="l2" type="button" value="登录" /></li>
+						<li>没有账号?现在就<span><a href="register.html"
+								target="_parent">注册</a></span></li>
+					</ul>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

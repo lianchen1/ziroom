@@ -17,16 +17,16 @@ public class NewsService {
 		pageUtil.pageList = newsDAO.showNews(newName, index, pageNum);
 		return pageUtil;
 	}
-	public PageUtil showComments(String comId,Integer index,Integer pageNum) {
+	public PageUtil showComments(String newId,Integer index,Integer pageNum) {
 		PageUtil pageUtil = new PageUtil();
 		pageUtil.index = index;
 		pageUtil.pageNum = pageNum;
-		pageUtil.totalPage = commentDAO.getPage(comId);
+		pageUtil.totalPage = commentDAO.getPage(newId);
 		pageUtil.totalNum = (pageUtil.totalPage-1)/pageNum+1;
-		pageUtil.pageList = commentDAO.getCom(comId, index, pageNum);
+		pageUtil.pageList = commentDAO.getCom(newId, index, pageNum);
 		return pageUtil;
 	}
 	public int delNew(String newId) {
-		return newsDAO.delNew(newId);
+		return newsDAO.delNew(newId)+newsDAO.delCom(newId);
 	}
 }

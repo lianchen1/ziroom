@@ -1,0 +1,118 @@
+*{
+	padding: 0;
+	margin: 0;	
+}
+.biaoti{
+	width: 1200px;
+	height: 83px;
+}
+.biaoti img{
+	width: 150px;
+	height: 50px;
+	margin-top:15px ;
+}
+hr{
+	border: solid  1px orange ;
+}
+.jiemian{
+	width: 100%;
+	height: 520px;
+	background-image:url(../img/login_back.jpg) ;
+	background-repeat: no-repeat;
+}
+.zcjm{
+	width: 1200px;
+	height: 508px;
+}
+.zcjm .zhuce{
+	width: 360px;
+	background-color:white ;
+	float: right;
+	margin-top:10px ;
+}
+li{
+	list-style: none;
+}
+ul li{
+	margin-top:20px ;
+	font-size: 10px;
+	margin-left: 35px;
+}
+ul li input{
+	outline: none;
+	border: 1px solid #CCCCCC;
+}
+ul li .l1{
+	width: 280px;
+	height: 45px;
+	border-radius:5px ;
+	background-color:rgb(255, 255, 255);
+	text-indent:15px ;
+}
+ul li .l2{
+	width: 130px;
+	height: 45px;
+	border-radius:5px ;
+	background-color:rgb(255, 255, 255);
+	font-size: 15px;
+	text-indent: 15px;
+}
+ul li .l3{
+	width: 280px;
+	height: 50px;
+	border: 0;
+	border-radius:5px ;
+	background-color:#ffa000 ;
+	font-size: 18px;
+	color: white;
+	cursor: pointer;
+}
+ul li .l3:hover{
+	background:#ff8228
+}
+ul li:nth-of-type(1){
+	font-size: 15px;
+}
+
+ul li:nth-of-type(8){
+	font-size: 14px;
+	margin-top: 10px;
+	margin-left: 110px;
+	margin-bottom: 10px;
+}
+ul li:nth-of-type(8) span a{
+	color: orange;
+}
+.yanzhengmabox{
+	height: 45px;
+	width: 120px;
+	background-color: #ffa000;
+	color: white;
+	line-height: 45px;
+	font-size: 16px;
+	display: inline-block;
+	cursor: pointer;
+	margin-left: 24px;
+	text-align:center;
+	
+}
+.sms{
+	display: inline-block;
+	margin-left: 00px;
+}
+.xinyonghu{
+	background-image: url(../img/login_icon.png);
+	background-position: 0 -78px;
+	background-repeat: no-repeat;
+	height: 21px;
+}
+.error{
+	color: red;
+}
+ul li input{
+	font-size: 15px;
+}
+#canvas{
+	margin-left: 25px;
+	vertical-align: middle;
+}

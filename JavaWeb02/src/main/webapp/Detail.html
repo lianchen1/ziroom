@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$(function() {
+			var url = window.location.href;
+			var urlName = url.substring(url.lastIndexOf("=") + 1);
+			$(".add").html("<a href='/JavaWeb02/Reply/writeDetail.do?invitId="+urlName+"' >添加评论</a>")
+			showDetail(urlName);
+			var page = $(".page").text();
+			$(".sy").click(function() {
+				page = 0;
+				showDetail(urlName, page)
+			})
+			$(".syy").click(function() {
+				if (page <= 0) {
+					page = 0;
+				} else {
+					page--;
+				}
+				showDetail(urlName, page)
+			})
+			$(".xyy").click(function() {
+				if (page >= $(".totalPage").text() - 1) {
+					page = $(".totalPage").text() - 1;
+				} else {
+					page++;
+				}
+				showDetail(urlName, page)
+			})
+			$(".my").click(function() {
+				page = $(".totalPage").text() - 1;
+				showDetail(urlName, page)
+			})
+		})
+		showDetail();
+	})
+	function showDetail(urlName, page) {
+		var invitId = "";
+		$.ajax({
+			type : "post",
+			data : {
+				invitId : urlName,
+				index : page
+			},
+			dataType : "json",
+			url : "/JavaWeb02/Reply/showDetail.do",
+			success : function(data) {
+				var myTable = $("tbody");
+				myTable.html("");
+				$.each(data["list"], function(i, v) {
+					var jsonDate = v["createdate"];
+					var dateTime = jsonDateFormat(jsonDate);
+					myTable.append("<tr><td>" + v["content"] + "</td><td>"
+							+ v["author"] + "</td><td>" + dateTime
+							+ "</td></tr>")
+				})
+				$(".page").text(data["index"] + 1);
+				$(".totalPage").text(data["totalPage"]);
+			},
+			error : function() {
+				alert("获取失败");
+			}
+		})
+	}
+	function jsonDateFormat(jsonDate) {
+
+		//json日期格式转换为正常格式
+
+		var jsonDateStr = jsonDate.toString();//此处用到toString（）是为了让传入的值为字符串类型，目的是为了避免传入的数据类型不支持.replace（）方法
+		try {
+			var date = new Date(parseInt(jsonDateStr.replace("/Date(", "")
+					.replace(")/", ""), 10));
+			var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1)
+					: date.getMonth() + 1;
+			var day = date.getDate() < 10 ? "0" + date.getDate() : date
+					.getDate();
+			var hours = date.getHours();
+			var minutes = date.getMinutes();
+			var seconds = date.getSeconds();
+			var milliseconds = date.getMilliseconds();
+			return date.getFullYear() + "-" + month + "-" + day;
+		} catch (ex) {
+			return "时间格式转换错误";
+		}
+	}
+</script>
+</head>
+<body>
+	<p class="add"></p>
+	<table>
+		<thead>
+			<tr>
+				<th>回复内容</th>
+				<th>回复昵称</th>
+				<th>发布时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<p>
+		第<span class="page">1</span>/<span class="totalPage">1</span>页
+		<button class="sy">首页</button>
+		<button class="syy">上一页</button>
+		<button class="xyy">下一页</button>
+		<button class="my">末页</button>
+	</p>
+</body>
+</html>

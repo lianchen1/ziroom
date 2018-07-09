@@ -32,4 +32,10 @@ public class NewsDAO extends BaseDAO<News_detail>{
 		lists.add(newId);
 		return super.updateData(sql, lists);
 	}
+	public int delCom(String newId) {
+		List<Object> lists = new ArrayList<Object>();
+		String sql = "delete from news_comment where newsid = ?";
+		lists.add(newId);
+		return super.updateData(sql, lists);
+	}
 }

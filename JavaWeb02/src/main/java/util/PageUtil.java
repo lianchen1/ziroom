@@ -9,7 +9,7 @@ public class PageUtil {
 	public Integer page;//每页条数
 	public Integer totalPage;//总页数
 	public Integer totalRecouds ;//总条数
-	public List<Map<String, Object>> books;
+	public List<Map<String, Object>> list;
 	public Integer getIndex() {
 		return index;
 	}
@@ -23,7 +23,23 @@ public class PageUtil {
 	public Integer getTotalRecouds() {
 		return totalRecouds;
 	}
-	public List<Map<String, Object>> getBooks() {
-		return books;
+	public List<Map<String, Object>> getList() {
+		return list;
 	}
+	public void setList(List<Map<String, Object>> list) {
+		this.list = list;
+	}
+	public void setIndex(Integer index) {
+		this.index = index;
+	}
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+	public void setTotalPage(Integer totalPage) {
+		this.totalPage = totalPage;
+	}
+	public void setTotalRecouds(Integer totalRecouds) {
+		this.totalRecouds = totalRecouds;
+	}
+	
 }
